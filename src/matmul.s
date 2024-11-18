@@ -115,8 +115,29 @@ inner_loop_start:
     j inner_loop_start
     
 inner_loop_end:
-    # TODO: Add your own implementation
-
+    # Move matrix A pointer to the next row
+    # Instead of mul t1, a2, t0 (a2 * 4), we use shift and add
+    slli t1, a2, 2    # t1 = a2 << 2 (equivalent to a2 * 4)
+    add s3, s3, t1    # Move A pointer to next row
+    
+    # Increment outer loop counter
+    addi s0, s0, 1
+    
+    # Jump back to outer loop
+    j outer_loop_start
+    
+outer_loop_end:
+    # Epilogue - restore saved registers
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    lw s3, 16(sp)
+    lw s4, 20(sp)
+    lw s5, 24(sp)
+    addi sp, sp, 28
+    
+    ret
 error:
     li a0, 38
     j exit

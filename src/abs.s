@@ -16,13 +16,17 @@
 # =================================================================
 abs:
     # Prologue
-    ebreak
-    # Load number from memory
-    lw t0 0(a0)
-    bge t0, zero, done
 
-    # TODO: Add your own implementation
+    # Load number from memory
+    lw t0, 0(a0)      # Load the integer from the address in a0 to t0
+    bge t0, zero, done # If t0 >= 0, jump to done (already non-negative)
+
+    # Negate the value to make it positive
+    neg t0, t0        # t0 = -t0
+
+    # Store the updated value back into memory
+    sw t0, 0(a0)      # Store the new value back to the address in a0
 
 done:
     # Epilogue
-    jr ra
+    jr ra             # Return to the caller
